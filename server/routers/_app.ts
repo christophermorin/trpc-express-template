@@ -1,4 +1,4 @@
-import { router } from '../src/app'
+import { router } from '../src/trpcInit'
 import { postRouter } from './postRoute'
 import { userRouter } from './userRoute'
 

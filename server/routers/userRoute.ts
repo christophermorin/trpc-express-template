@@ -1,12 +1,14 @@
-import { router, publicProcedure } from '../src/app'
+import { router } from '../src/trpcInit'
 import { z } from 'zod'
-import { userModel } from "../db/Users";
+import { userModel } from '../db/Users';
+import { loggedProcedure } from '../middleware/loggerMiddleware'
+import { adminProcedure } from '../middleware/adminMiddleware'
 
 export const userRouter = router({
-  getUsers: publicProcedure.query(async (req) => {
+  getUsers: loggedProcedure.query(async (req) => {
     return await userModel.getAll()
   }),
-  createUser: publicProcedure.input(z.object({ name: z.string() }))
+  createUser: adminProcedure.input(z.object({ name: z.string() }))
     .mutation(async (req) => {
       return userModel.createNewUser(req.input)
     }),

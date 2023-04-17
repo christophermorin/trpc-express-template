@@ -1,4 +1,4 @@
-import { router, publicProcedure } from '../src/app'
+import { router, publicProcedure } from '../src/trpcInit'
 import { z } from 'zod'
 import { postModel } from '../db/Posts'
 
