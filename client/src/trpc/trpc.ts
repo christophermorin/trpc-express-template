@@ -1,5 +1,5 @@
 import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
-import type { AppRouter } from '../../../server/routers/_app'
+import type { AppRouter } from '../../../server/routers/root'
 
 export const client = createTRPCProxyClient<AppRouter>({
   links: [
