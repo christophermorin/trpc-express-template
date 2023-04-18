@@ -4,9 +4,23 @@ import * as trpcExpress from '@trpc/server/adapters/express';
 export const createContext = ({
   req,
   res,
-}: trpcExpress.CreateExpressContextOptions) => ({ user: "admin" }); // no context
+}: trpcExpress.CreateExpressContextOptions) => (
+  {
+    user: "admin",
+  }
+); // no context
 type Context = inferAsyncReturnType<typeof createContext>;
-const t = initTRPC.context<Context>().create();
+const t = initTRPC.context<Context>().create({
+  errorFormatter({ shape, error }) {
+    return {
+      ...shape,
+      myNewRandomData: 1337,
+      data: {
+        ...shape.data,
+      },
+    };
+  },
+});
 
 export const router = t.router
 export const middleware = t.middleware
