@@ -1,26 +1,38 @@
 import { inferAsyncReturnType, initTRPC } from '@trpc/server';
 import * as trpcExpress from '@trpc/server/adapters/express';
-// created for each request
+
 export const createContext = ({
   req,
   res,
-}: trpcExpress.CreateExpressContextOptions) => (
-  {
-    user: "admin",
-  }
-); // no context
-type Context = inferAsyncReturnType<typeof createContext>;
-const t = initTRPC.context<Context>().create({
-  errorFormatter({ shape, error }) {
+}: trpcExpress.CreateExpressContextOptions) => {
+  const getUser = () => {
+    if (req.headers.authorization !== 'secret') {
+      return null;
+    }
     return {
-      ...shape,
-      myNewRandomData: 1337,
-      data: {
-        ...shape.data,
-      },
+      name: 'alex',
     };
-  },
-});
+  };
+
+  return {
+    req,
+    res,
+    user: getUser(),
+  };
+};
+type Context = inferAsyncReturnType<typeof createContext>;
+const t = initTRPC.context<Context>().create(
+  {
+    errorFormatter({ shape, error }) {
+      return {
+        ...shape,
+        data: {
+          ...shape.data,
+        },
+      };
+    },
+  }
+);
 
 export const router = t.router
 export const middleware = t.middleware

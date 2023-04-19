@@ -7,7 +7,7 @@ interface LogProps {
 }
 
 const logMock = (message: string, { path, type, durationMs }: LogProps) => {
-  console.log(message, { path, type, durationMs });
+  console.log(`⬅️  ${message}`, { path, type, durationMs });
 };
 
 export const loggerMiddleware = middleware(async ({ path, type, next }) => {
